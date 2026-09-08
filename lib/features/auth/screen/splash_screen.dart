@@ -1,9 +1,33 @@
 import 'package:flutter/material.dart';
+import '../../../../../app/theme/app_theme.dart';
+import 'login_screen.dart';
 
-import '../../../../app/theme/app_theme.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToLogin();
+  }
+
+  /// after 2 second
+  void _navigateToLogin() {
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +58,7 @@ class SplashScreen extends StatelessWidget {
             ),
             const SizedBox(height: 18),
 
-            /// title
+            /// Title
             const Text(
               "Task Manager",
               style: TextStyle(
