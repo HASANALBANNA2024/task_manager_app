@@ -8,7 +8,7 @@ class AppUrls {
   static const String profileUpdate = '$_baseUrl/ProfileUpdate';
   static String recoverVerifyEmail(email) => '$_baseUrl/RecoverVerifyEmail/$email';
   static String recoverVerifyOtp(String email, String otp) => '$_baseUrl/RecoverVerifyOtp/$email/$otp';
-  static const String recoverResetPassword = '$_baseUrl/RecoverResetPassword';
+  static const String recoverResetPassword = '$_baseUrl/RecoverResetPass';
 
   // Task Endpoints
   static const String createTask = '$_baseUrl/createTask';

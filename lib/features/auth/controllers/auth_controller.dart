@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:task_manager_app/core/constants/app_urls.dart';
 import 'package:task_manager_app/core/network/api_service.dart';
 
@@ -50,7 +49,7 @@ class AuthController {
   }) async {
     final Map<String, dynamic> requestBody = {
       "email": email.trim(),
-      "OTP": otp.trim(), // POSTMAN-এ "OTP" ক্যাপিটাল লেটারে দেওয়া আছে
+      "OTP": otp.trim(), // POSTMAN- "OTP"
       "password": newPassword.trim(),
     };
 

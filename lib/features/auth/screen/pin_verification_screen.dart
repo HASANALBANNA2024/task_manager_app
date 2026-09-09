@@ -11,6 +11,7 @@ import '../../../app/theme/app_theme.dart';
 
 class PinVerificationScreen extends StatefulWidget {
   final String? email;
+
   const PinVerificationScreen({super.key, this.email});
 
   @override
@@ -19,9 +20,11 @@ class PinVerificationScreen extends StatefulWidget {
 
 class _PinVerificationScreenState extends State<PinVerificationScreen> {
   bool _inProgress = false;
+  bool _isResending = false;
+
   // 6 Digit Controller & FocusNodes
   final List<TextEditingController> _controllers =
-  List.generate(6, (_) => TextEditingController());
+      List.generate(6, (_) => TextEditingController());
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
 
   @override
@@ -62,25 +65,25 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
             const SizedBox(height: 30),
 
             // Header Icon & Title
-            const Center(
+            Center(
               child: Column(
                 children: [
-                  AppIcon(
+                  const AppIcon(
                     icon: Icons.lock_outline_rounded,
                     size: 64,
                     iconSize: 32,
                     iconColor: Color(0xFF2D5A42),
                   ),
-                  SizedBox(height: 24),
-                  AppText(
+                  const SizedBox(height: 24),
+                  const AppText(
                     "Enter the code",
                     fontSize: 22,
                     fontWeight: FontWeight.w800,
                     color: Colors.black87,
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   AppText(
-                    "We sent a 6-digit verification code to\nhasan@gmail.com",
+                    "We sent a 6-digit verification code to\n${widget.email ?? 'your email'}",
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
                     color: Colors.black45,
@@ -101,19 +104,14 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
 
             const SizedBox(height: 28),
 
-            // Verify Button
-            AppButton(
-              text: "Verify",
-              width: double.infinity,
-              onTap: () {
-                _onTapVerifyOtp();
-                // Collect 6-digit OTP code
-                String otpCode = _controllers.map((c) => c.text).join();
-                debugPrint("Entered OTP: $otpCode");
-
-                // Navigate to Set Password Screen
-              },
-            ),
+            // Verify Button with Loading Indicator
+            _inProgress
+                ? const Center(child: CircularProgressIndicator())
+                : AppButton(
+                    text: "Verify",
+                    width: double.infinity,
+                    onTap: _onTapVerifyOtp,
+                  ),
 
             const SizedBox(height: 24),
 
@@ -126,15 +124,20 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
                   fontSize: 12.5,
                   color: Colors.black45,
                 ),
-                AppTextButton(
-                  text: "Resend",
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w800,
-                  color: AppTheme.moss ?? const Color(0xFF2D5A42),
-                  onTap: () {
-                    // Resend code logic
-                  },
-                ),
+                _isResending
+                    ? const SizedBox(
+                        height: 16,
+                        width: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : AppTextButton(
+                        text: "Resend",
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w800,
+                        color: AppTheme.moss ?? const Color(0xFF2D5A42),
+                        onTap: _onTapResendCode)
               ],
             ),
           ],
@@ -143,20 +146,24 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
     );
   }
 
-  // PinVerificationScreen-এর State ক্লাসের ভেতরে
+  // OTP Verification logic
   Future<void> _onTapVerifyOtp() async {
-    String ? otpCode = _controllers.map((c) => c.text.trim()).join();
+    String otpCode = _controllers.map((c) => c.text.trim()).join();
 
-    if(otpCode.length<6){
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: AppText("please enter 6-digit code")));
+    if (otpCode.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter 6-digit code")),
+      );
       return;
     }
 
-    /// email checker
-    if(widget.email == null || widget.email!.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: AppText("Email address is missing!")));
-      return ;
+    if (widget.email == null || widget.email!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Email address is missing!")),
+      );
+      return;
     }
+
     setState(() => _inProgress = true);
 
     bool isSuccess = await AuthController.verifyotp(widget.email!, otpCode);
@@ -164,12 +171,17 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
     setState(() => _inProgress = false);
     if (!mounted) return;
 
-    if(isSuccess){
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>
-          ResetPasswordScreen(email: widget.email!
-              , otpcode: otpCode)));
-    }
-    else{
+    if (isSuccess) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResetPasswordScreen(
+            email: widget.email!,
+            otpcode: otpCode,
+          ),
+        ),
+      );
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Invalid OTP code! Please try again.'),
@@ -178,7 +190,43 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
       );
     }
   }
-  // Single OTP Box Widget (Optimized for 6 digits spacing)
+
+  // Resend method
+  Future<void> _onTapResendCode() async {
+    if (widget.email == null || widget.email!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: AppText("Email address is missing")));
+      return;
+    }
+    setState(() {
+      _isResending = true;
+    });
+    bool isSuccess = await AuthController.verifyEmail(widget.email!);
+    setState(() {
+      isSuccess = false;
+    });
+    if (!mounted) return;
+
+    if (isSuccess) {
+      for (var controller in _controllers) {
+        controller.clear();
+      }
+      _focusNodes[0].requestFocus();
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: AppText("OTP sent again! Check your email")));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: AppText(
+            "Failed to resend code! Please try again.",
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  // Single OTP Box Widget
   Widget _buildOtpBox(int index) {
     return SizedBox(
       height: 52,

@@ -11,11 +11,13 @@ class RecoverVerifyEmailScreen extends StatefulWidget {
   const RecoverVerifyEmailScreen({super.key});
 
   @override
-  State<RecoverVerifyEmailScreen> createState() => _RecoverVerifyEmailScreenState();
+  State<RecoverVerifyEmailScreen> createState() =>
+      _RecoverVerifyEmailScreenState();
 }
 
 class _RecoverVerifyEmailScreenState extends State<RecoverVerifyEmailScreen> {
   final TextEditingController _emailController = TextEditingController();
+
   bool _inProgress = false;
 
   @override
@@ -92,14 +94,15 @@ class _RecoverVerifyEmailScreenState extends State<RecoverVerifyEmailScreen> {
 
             const SizedBox(height: 24),
 
-            // Send Code Primary Button
-            AppButton(
-              text: "Send code",
-              width: double.infinity,
-              onTap: () {
-               _onTapVerifyEmail();
-              },
-            ),
+            _inProgress
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : AppButton(
+                    text: "Send code",
+                    onTap: _onTapVerifyEmail,
+                    width: double.infinity,
+                  )
           ],
         ),
       ),
@@ -109,8 +112,9 @@ class _RecoverVerifyEmailScreenState extends State<RecoverVerifyEmailScreen> {
   /// Email Verification Method
   Future<void> _onTapVerifyEmail() async {
     final email = _emailController.text.trim();
-    if(email.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: AppText("Please enter a valid email")));
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: AppText("Please enter a valid email")));
       return;
     }
     setState(() => _inProgress = true);
@@ -118,12 +122,18 @@ class _RecoverVerifyEmailScreenState extends State<RecoverVerifyEmailScreen> {
     bool isSuccess = await AuthController.verifyEmail(email);
 
     setState(() => _inProgress = false);
-    if(!mounted) return;
+    if (!mounted) return;
 
-    if(isSuccess){
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> PinVerificationScreen(email: email)));
+    if (isSuccess) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => PinVerificationScreen(email: email)));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: AppText("User not found or email verification failed"), backgroundColor: Colors.red,));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: AppText("User not found or email verification failed"),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 }

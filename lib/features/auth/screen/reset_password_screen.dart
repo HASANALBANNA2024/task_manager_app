@@ -4,7 +4,6 @@ import 'package:task_manager_app/core/widgets/app_icon.dart';
 import 'package:task_manager_app/core/widgets/app_text.dart';
 import 'package:task_manager_app/core/widgets/app_text_field.dart';
 import 'package:task_manager_app/core/widgets/screen_background.dart';
-
 import '../controllers/auth_controller.dart';
 import 'login_screen.dart';
 
@@ -107,13 +106,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             const SizedBox(height: 28),
 
             // Reset Password Action Button
-            AppButton(
-              text: "Reset password",
-              width: double.infinity,
-              onTap: () {
-                _onTapResetPassword();
-              },
-            ),
+           _inProgress ? const Center(child:  CircularProgressIndicator(),) :
+               AppButton(text: "Reset password", onTap: _onTapResetPassword, width: double.infinity,)
           ],
         ),
       ),

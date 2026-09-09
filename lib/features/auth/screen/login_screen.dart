@@ -17,9 +17,11 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>{
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -30,92 +32,137 @@ class _LoginScreenState extends State<LoginScreen>{
 
   @override
   Widget build(BuildContext context) {
-    return  ScreenBackground(
+    return ScreenBackground(
       isGradient: false,
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-               const AppIcon(icon: Icons.edit_note_rounded,
-                 size: 64,
-                 iconSize: 36,
-                 iconColor: Color(0xFF2D5A42),
-               ),
-                const SizedBox(height: 24,),
-                const AppText("Welcome Back", fontSize: 22, fontWeight: FontWeight.w800, color: Colors.black87,),
-                const SizedBox(height: 8,),
-                const AppText("All your tasks in one place. Log in to pick \n up where you left off.",
+      child: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const AppIcon(
+                icon: Icons.edit_note_rounded,
+                size: 64,
+                iconSize: 36,
+                iconColor: Color(0xFF2D5A42),
+              ),
+              const SizedBox(height: 24),
+              const AppText(
+                "Welcome Back",
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
+                color: Colors.black87,
+              ),
+              const SizedBox(height: 8),
+              const AppText(
+                "All your tasks in one place. Log in to pick \n up where you left off.",
                 fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black45,
-                  textAlign: TextAlign.center,
-                  height: 1.4,
+                fontWeight: FontWeight.w400,
+                color: Colors.black45,
+                textAlign: TextAlign.center,
+                height: 1.4,
+              ),
+              const SizedBox(height: 32),
+              AppTextField(
+                controller: _emailController,
+                hintText: "youremail@gmail.com",
+                labelText: "Email",
+                keyboardType: TextInputType.emailAddress,
+              ),
+              const SizedBox(height: 16),
+              AppTextField(
+                controller: _passwordController,
+                hintText: "********",
+                labelText: "Password",
+                obscureText: true,
+              ),
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerRight,
+                child: AppTextButton(
+                  text: "Forgot Password",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: AppTheme.moss ?? const Color(0xFF2D5A42),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RecoverVerifyEmailScreen(),
+                      ),
+                    );
+                  },
                 ),
-                const SizedBox(height: 32,),
-                AppTextField(
-                    controller: _emailController,
-                    hintText: "youremail@gmail.com",
-                    labelText: "Email",
-                    keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 16,),
-                AppTextField(
-                  controller: _passwordController,
-                  hintText: "********",
-                  labelText: "Password",
-                  obscureText: true,),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: AppTextButton(text: "Forgot Password",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.moss ?? const Color(0xFF2D5A42),
-                      onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> const RecoverVerifyEmailScreen()));
-                      }),
-                ),
-                const SizedBox(height: 20,),
-                AppButton(text: "Log in", width: double.infinity,  onTap: (){
-                  _onTapLogin();
-                }),
-                const SizedBox(height: 24,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const AppText("Don't have an account?", fontSize: 12.5, color: Colors.black45,),
-                    AppTextButton(text: "Sign up", fontSize: 12.5, fontWeight: FontWeight.w800, color: AppTheme.moss ?? const Color(0xFF2D5A42) ,onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUpScreen()));
-                    })
-                  ],
-                )
-              ],
-            ),
+              ),
+              const SizedBox(height: 20),
+
+
+              _isLoading
+                  ? const CircularProgressIndicator()
+                  : AppButton(
+                text: "Log in",
+                width: double.infinity,
+                onTap: _onTapLogin,
+              ),
+
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const AppText(
+                    "Don't have an account?",
+                    fontSize: 12.5,
+                    color: Colors.black45,
+                  ),
+                  AppTextButton(
+                    text: "Sign up",
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w800,
+                    color: AppTheme.moss ?? const Color(0xFF2D5A42),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpScreen(),
+                        ),
+                      );
+                    },
+                  )
+                ],
+              )
+            ],
           ),
         ),
+      ),
     );
   }
 
-
-  /// login function use api service
+  /// login function with loading indication
   void _onTapLogin() async {
-    bool isSuccess = await AuthController.login
-      (
-        email: _emailController.text.toString(),
-        password: _passwordController.text.toString()
+    setState(() {
+      _isLoading = true;
+    });
+
+    bool isSuccess = await AuthController.login(
+      email: _emailController.text.toString(),
+      password: _passwordController.text.toString(),
     );
+
     if (!mounted) return;
-    if(isSuccess){
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (isSuccess) {
       debugPrint("successfully login");
-    }
-    else{
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login failed! Check email or password.')),
+        const SnackBar(
+          content: Text('Login failed! Check email or password.'),
+        ),
       );
     }
   }
 }
-
