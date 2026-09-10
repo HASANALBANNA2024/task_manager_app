@@ -4,6 +4,8 @@ import 'package:task_manager_app/core/network/api_service.dart';
 
 class AuthController {
   static String? userToken;
+
+  static Map<String, dynamic>? userData;
   /// login method
   static Future<bool> login({required String email, required String password}) async {
     final ApiResponse response = await ApiService.postRequest(

@@ -8,6 +8,7 @@ import 'package:task_manager_app/core/widgets/screen_background.dart';
 import 'package:task_manager_app/features/auth/controllers/auth_controller.dart';
 import 'package:task_manager_app/features/auth/screen/Recover_verify_email_screen.dart';
 import 'package:task_manager_app/features/auth/screen/sign_up_screen.dart';
+import 'package:task_manager_app/features/dashboard/screen/dashboard_screen.dart';
 import '../../../app/theme/app_theme.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -143,20 +144,16 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-
     bool isSuccess = await AuthController.login(
       email: _emailController.text.toString(),
       password: _passwordController.text.toString(),
     );
-
     if (!mounted) return;
-
     setState(() {
       _isLoading = false;
     });
-
     if (isSuccess) {
-      debugPrint("successfully login");
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> const DashboardScreen()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
