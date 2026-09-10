@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class ProfileHeader extends StatelessWidget {
   final String title;
-  final String? userName; // Nullable করা হলো যেন API লোড না হওয়া পর্যন্ত ক্র্যাশ না করে
+  final String? userName;
   final String? taskCountText;
-  final String? userInitials; // Nullable করা হলো
+  final String? userInitials;
   final VoidCallback? onProfileTap;
 
   const ProfileHeader({

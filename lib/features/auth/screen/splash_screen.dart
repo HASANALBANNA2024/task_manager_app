@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/features/auth/controllers/auth_controller.dart';
 import '../../../../../app/theme/app_theme.dart';
+import '../../dashboard/screen/dashboard_screen.dart';
 import 'login_screen.dart';
 
 
@@ -14,21 +16,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateToLogin();
+    _checkLoginAndNavigate();
   }
-
-  /// after 2 second
-  void _navigateToLogin() {
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,5 +72,27 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+
+  void _checkLoginAndNavigate() async {
+    await Future.delayed(const Duration(seconds: 2));
+    if(!mounted) return;
+
+    bool isLoggedIn = await AuthController.checkAutoLogin();
+
+    if(!mounted) return;
+
+    if(isLoggedIn){
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const DashboardScreen()),
+      );
+    }
+    else{
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    }
   }
 }

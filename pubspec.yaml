@@ -3,21 +3,19 @@ description: "A new Flutter project."
 
 publish_to: 'none'
 
-
 version: 1.0.0+1
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
 
-
 dependencies:
   flutter:
     sdk: flutter
 
-
   cupertino_icons: ^1.0.8
   google_fonts: ^8.2.1
   http: ^1.6.0
+  shared_preferences: ^2.5.5
 
 dev_dependencies:
   flutter_test:
@@ -26,23 +24,16 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.4.0
 
-# --------------------------------------------------
-# APP LAUNCHER ICON CONFIGURATION (Circle Shape)
-# --------------------------------------------------
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/images/app_icon.jpg"
   min_sdk_android: 21
-  # Android 8.0+ এর জন্য আইকন গোল (Circle) করার কনফিগারেশন:
-  adaptive_icon_background: "#33553F" # Background Color (Moss)
-  adaptive_icon_foreground: "assets/images/app_icon.jpg" # Foreground Icon
+  adaptive_icon_background: "#33553F"
+  adaptive_icon_foreground: "assets/images/app_icon.jpg"
 
-# --------------------------------------------------
-# NATIVE SPLASH SCREEN CONFIGURATION
-# --------------------------------------------------
 flutter_native_splash:
-  color: "#33553F" # Background Color (AppTheme.moss)
+  color: "#33553F"
   image: "assets/images/app_icon.jpg"
   android_12:
     color: "#33553F"
@@ -53,4 +44,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/app_icon.jpg
-

@@ -9,8 +9,6 @@ import '../widgets/dashboard_status_grid.dart';
 import '../widgets/recent_task_list_section.dart';
 import '../controllers/task_controller.dart';
 
-
-
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -33,8 +31,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _getDashboardData();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,8 +43,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               ProfileHeader(
                 title: "Task Manager",
-                userName: _userName.isEmpty ? "Loading..." : _userName,
+                userName: _userName.isEmpty ? null : _userName,
                 taskCountText: "$_totalTasks tasks total",
+                onProfileTap: () {
+                  //profile screen
+                },
               ),
               const SizedBox(height: 20),
               Expanded(child: _buildScreenBody()),
@@ -59,10 +58,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
       bottomNavigationBar: AppBottomNavBar(
         selectedIndex: 0,
         items: [
-          BottomNavItem(icon: Icons.home_outlined, activeIcon: Icons.home_filled, label: 'Home', onTap: () {}),
-          BottomNavItem(icon: Icons.assignment_outlined, activeIcon: Icons.assignment, label: 'Tasks', onTap: () {}),
-          BottomNavItem(icon: Icons.add, label: 'Add', isSpecialButton: true, onTap: () {}),
-          BottomNavItem(icon: Icons.person_outline, activeIcon: Icons.person, label: 'Profile', onTap: () {}),
+          BottomNavItem(
+              icon: Icons.home_outlined,
+              activeIcon: Icons.home_filled,
+              label: 'Home',
+              onTap: () {}),
+          BottomNavItem(
+              icon: Icons.assignment_outlined,
+              activeIcon: Icons.assignment,
+              label: 'Tasks',
+              onTap: () {}),
+          BottomNavItem(
+              icon: Icons.add,
+              label: 'Add',
+              isSpecialButton: true,
+              onTap: () {}),
+          BottomNavItem(
+              icon: Icons.person_outline,
+              activeIcon: Icons.person,
+              label: 'Profile',
+              onTap: () {}),
         ],
       ),
     );
@@ -103,8 +118,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     try {
       String token = AuthController.userToken ?? "";
 
-      var statusResponse = await TaskController.getTaskStatusCount(token: token);
-      var taskResponse = await TaskController.getTasksByStatus(status: 'New', token: token);
+      var statusResponse =
+          await TaskController.getTaskStatusCount(token: token);
+      var taskResponse =
+          await TaskController.getTasksByStatus(status: 'New', token: token);
 
       if (!mounted) return;
 
@@ -113,8 +130,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
         _recentTaskList = taskResponse.responseData['data'] ?? [];
 
         // AuthController safety check
-        String firstName = AuthController.userData != null ? (AuthController.userData!['firstName'] ?? 'User') : 'User';
-        String lastName = AuthController.userData != null ? (AuthController.userData!['lastName'] ?? '') : '';
+        String firstName = AuthController.userData != null
+            ? (AuthController.userData!['firstName'] ?? 'User')
+            : 'User';
+        String lastName = AuthController.userData != null
+            ? (AuthController.userData!['lastName'] ?? '')
+            : '';
         _userName = "$firstName $lastName".trim();
 
         _totalTasks = 0;

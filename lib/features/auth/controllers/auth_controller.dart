@@ -1,10 +1,10 @@
 import 'dart:developer';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager_app/core/constants/app_urls.dart';
 import 'package:task_manager_app/core/network/api_service.dart';
 
 class AuthController {
   static String? userToken;
-
   static Map<String, dynamic>? userData;
   /// login method
   static Future<bool> login({required String email, required String password}) async {
@@ -15,17 +15,58 @@ class AuthController {
         "password": password,
       },
     );
-    if(response.isSuccess){
+
+    if (response.isSuccess) {
       final responseData = response.responseData;
-      /// token save in controller memory
-      if(responseData != null && responseData['token']!= null ){
+
+      if (responseData != null) {
+        /// memory saved
         userToken = responseData['token'];
-        /// shared preference saved to token (for local storage)
+        userData = responseData['data'];
+
+        // SharedPreferences
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+        /// token saved
+        if (userToken != null) {
+          await sharedPreferences.setString('token', userToken!);
+        }
+
+        /// user data saved
+        if (userData != null) {
+          await sharedPreferences.setString('firstName', userData?['firstName'] ?? '');
+          await sharedPreferences.setString('lastName', userData?['lastName'] ?? '');
+          await sharedPreferences.setString('email', userData?['email'] ?? '');
+        }
       }
       return true;
     } else {
       return false;
     }
+  }
+  /// auto login check
+  static Future<bool> checkAutoLogin()async {
+   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+   String? token = sharedPreferences.getString('user_token');
+
+   if(token != null && token.isNotEmpty){
+     userToken = token;
+     String firstName = sharedPreferences.getString('first_name')??'';
+     String lastName = sharedPreferences.getString('first_name')??'';
+     userData = {
+       'firstName':firstName,
+       'lastName':lastName,
+     };
+     return true;
+   }
+   return false;
+  }
+  ///logout
+  static Future<void> logout() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.clear();
+    userToken= null;
+    userData = null;
   }
   /// Verify Method
   static Future<bool> verifyEmail(String email) async {
