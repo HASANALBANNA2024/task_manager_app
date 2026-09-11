@@ -6,6 +6,13 @@ import 'package:task_manager_app/core/network/api_service.dart';
 class AuthController {
   static String? userToken;
   static Map<String, dynamic>? userData;
+
+  // SharedPreferences Keys
+  static const String _tokenKey = 'token';
+  static const String _firstNameKey = 'firstName';
+  static const String _lastNameKey = 'lastName';
+  static const String _emailKey = 'email';
+
   /// login method
   static Future<bool> login({required String email, required String password}) async {
     final ApiResponse response = await ApiService.postRequest(
@@ -29,14 +36,14 @@ class AuthController {
 
         /// token saved
         if (userToken != null) {
-          await sharedPreferences.setString('token', userToken!);
+          await sharedPreferences.setString(_tokenKey, userToken!);
         }
 
         /// user data saved
         if (userData != null) {
-          await sharedPreferences.setString('firstName', userData?['firstName'] ?? '');
-          await sharedPreferences.setString('lastName', userData?['lastName'] ?? '');
-          await sharedPreferences.setString('email', userData?['email'] ?? '');
+          await sharedPreferences.setString(_firstNameKey, userData?['firstName'] ?? '');
+          await sharedPreferences.setString(_lastNameKey, userData?['lastName'] ?? '');
+          await sharedPreferences.setString(_emailKey, userData?['email'] ?? '');
         }
       }
       return true;
@@ -44,46 +51,54 @@ class AuthController {
       return false;
     }
   }
-  /// auto login check
-  static Future<bool> checkAutoLogin()async {
-   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-   String? token = sharedPreferences.getString('user_token');
 
-   if(token != null && token.isNotEmpty){
-     userToken = token;
-     String firstName = sharedPreferences.getString('first_name')??'';
-     String lastName = sharedPreferences.getString('first_name')??'';
-     userData = {
-       'firstName':firstName,
-       'lastName':lastName,
-     };
-     return true;
-   }
-   return false;
+  /// auto login check
+  static Future<bool> checkAutoLogin() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = sharedPreferences.getString(_tokenKey);
+
+    if (token != null && token.isNotEmpty) {
+      userToken = token;
+      String firstName = sharedPreferences.getString(_firstNameKey) ?? '';
+      String lastName = sharedPreferences.getString(_lastNameKey) ?? '';
+      String email = sharedPreferences.getString(_emailKey) ?? '';
+
+      userData = {
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+      };
+      return true;
+    }
+    return false;
   }
-  ///logout
+
+  /// logout
   static Future<void> logout() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.clear();
-    userToken= null;
+    userToken = null;
     userData = null;
   }
+
   /// Verify Method
   static Future<bool> verifyEmail(String email) async {
-    final response = await ApiService.getRequest( AppUrls.recoverVerifyEmail(email.trim()),);
-    if(response.isSuccess && response.responseData ['status'] == 'success'){
+    final response = await ApiService.getRequest(AppUrls.recoverVerifyEmail(email.trim()));
+    if (response.isSuccess && response.responseData['status'] == 'success') {
       return true;
     }
     return false;
   }
+
   /// OTP Verify
   static Future<bool> verifyotp(String email, String otp) async {
     final response = await ApiService.getRequest(AppUrls.recoverVerifyOtp(email.trim(), otp.trim()));
-    if(response.isSuccess && response.responseData ['status'] == 'success'){
+    if (response.isSuccess && response.responseData['status'] == 'success') {
       return true;
     }
     return false;
   }
+
   /// Reset password
   static Future<bool> resetPassword({
     required String email,

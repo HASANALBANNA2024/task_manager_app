@@ -1,54 +1,65 @@
 import 'package:flutter/material.dart';
 
-class BottomNavItem{
+class BottomNavItem {
   final IconData icon;
   final IconData? activeIcon;
   final String label;
   final VoidCallback onTap;
   final bool isSpecialButton;
 
-  BottomNavItem({required this.icon,
+  BottomNavItem({
+    required this.icon,
     required this.label,
     required this.onTap,
     this.activeIcon,
-    this.isSpecialButton = false,});
+    this.isSpecialButton = false,
+  });
 }
 
-
-class AppBottomNavBar  extends StatelessWidget{
+class AppBottomNavBar extends StatelessWidget {
   final int selectedIndex;
   final List<BottomNavItem> items;
   const AppBottomNavBar({
     super.key,
     required this.selectedIndex,
     required this.items,
-});
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 72,
-      padding:  const EdgeInsets.symmetric(horizontal: 12),
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(
           top: BorderSide(
             color: Color(0xFFE8ECE9),
             width: 1.0,
-          )
-        )
+          ),
+        ),
       ),
-      child:  Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(items.length, (index) {
-          final item = items[index];
-          final bool isSelected = selectedIndex == index;
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 72,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: List.generate(
+                items.length,
+                    (index) {
+                  final item = items[index];
+                  final bool isSelected = selectedIndex == index;
 
-          if (item.isSpecialButton) {
-            return _buildSpecialButton(item: item, isSelected: isSelected);
-          }
-          return _buildNavItem(item: item, isSelected: isSelected);
-        },)
+                  if (item.isSpecialButton) {
+                    return _buildSpecialButton(item: item, isSelected: isSelected);
+                  }
+                  return _buildNavItem(item: item, isSelected: isSelected);
+                },
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -134,5 +145,4 @@ class AppBottomNavBar  extends StatelessWidget{
       ),
     );
   }
-
 }

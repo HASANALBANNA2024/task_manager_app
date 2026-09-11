@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager_app/core/widgets/app_bottom_nav_bar.dart';
+import 'package:task_manager_app/core/widgets/app_text.dart';
+import 'package:task_manager_app/core/widgets/profile_menu_helper.dart';
 import 'package:task_manager_app/features/dashboard/widgets/error_empty_state.dart';
 import 'package:task_manager_app/features/dashboard/widgets/profile_header.dart';
 import 'package:task_manager_app/core/widgets/screen_background.dart';
@@ -46,7 +48,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 userName: _userName.isEmpty ? null : _userName,
                 taskCountText: "$_totalTasks tasks total",
                 onProfileTap: () {
-                  //profile screen
+                  ProfileMenuHelper.showMenu(context, items: [
+                    ///profile menu
+                    ProfileMenuItem(title: "Profile", icon: Icons.person_off_rounded, onTap: (){}),
+                    ///settings
+                    ProfileMenuItem(title: "Settings", icon: Icons.settings_rounded, onTap: (){}),
+                    ///logout
+                    ProfileMenuItem(title: "Logout", icon: Icons.logo_dev_rounded, onTap: (){
+                      AuthController.logout();
+                    }),
+                  ]);
                 },
               ),
               const SizedBox(height: 20),
