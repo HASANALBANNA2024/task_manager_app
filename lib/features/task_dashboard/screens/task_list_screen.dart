@@ -4,12 +4,11 @@ import 'package:task_manager_app/core/network/api_service.dart';
 import 'package:task_manager_app/core/widgets/app_text.dart';
 import 'package:task_manager_app/core/widgets/screen_background.dart';
 import 'package:task_manager_app/features/task_details/task_details_screen.dart';
-
 import '../../../app/theme/app_theme.dart';
 import '../../dashboard/widgets/task_item_card.dart';
 import '../widgets/task_empty_state_widget.dart';
 import '../widgets/task_filter_chips.dart';
-import '../widgets/task_scroll_indicator.dart';
+
 
 class TaskListScreen extends StatefulWidget {
   const TaskListScreen({super.key});
@@ -46,14 +45,27 @@ class _TaskListScreenState extends State<TaskListScreen> {
             const SizedBox(
               height: 16,
             ),
-            const AppText(
-              "My Task",
-              fontSize: 22,
-              color: AppTheme.ink,
-              fontWeight: FontWeight.w800,
+            const Row(
+             children: [
+               SizedBox(width: 10,),
+               AppText(
+                 "My Task",
+                 fontSize: 22,
+                 color: AppTheme.ink,
+                 fontWeight: FontWeight.w800,
+               ),
+             ],
             ),
             const SizedBox(
               height: 14,
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 12.0),
+              child: Divider(
+                height: 1,
+                thickness: 1,
+                color: Color(0xFFE2E8F0),
+              ),
             ),
             TaskFilterChips(
                 selectedFilter: _selectedFilter,
@@ -69,7 +81,6 @@ class _TaskListScreenState extends State<TaskListScreen> {
                     });
                   }
                 }),
-            const TaskScrollIndicator(),
             const SizedBox(
               height: 6,
             ),

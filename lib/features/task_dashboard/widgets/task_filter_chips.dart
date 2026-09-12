@@ -23,7 +23,7 @@ class TaskFilterChips extends StatelessWidget {
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      physics: const BouncingScrollPhysics(),
       child: Row(
         children: filters.map((filter) {
           final String value = filter['value']!;

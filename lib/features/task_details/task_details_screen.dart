@@ -4,6 +4,7 @@ import 'package:task_manager_app/core/widgets/app_icon_button.dart';
 import 'package:task_manager_app/core/widgets/app_text.dart';
 import 'package:task_manager_app/core/widgets/app_text_button.dart';
 import 'package:task_manager_app/core/widgets/screen_background.dart';
+import 'package:task_manager_app/features/task_details/components/edit_task_bottom_sheet.dart';
 
 import '../../app/theme/app_theme.dart';
 import '../../core/constants/app_urls.dart';
@@ -188,9 +189,14 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           text: "Edit",
                           isOutlined: true,
                           borderColor: AppTheme.moss,
-                          onTap: () {
-                            // Edit Action
+                          onTap: (){
+                            if(widget.taskData != null)
+                              {
+                                _showEditBottomSheet(widget.taskData!);
+                              }
+
                           },
+
                         ),
                       ),
                       const SizedBox(width: 14),
@@ -347,4 +353,30 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
       );
     }
   }
+
+  /// bottom show on edit bottom sheet
+  void _showEditBottomSheet(Map<String, dynamic> taskData){
+    showModalBottomSheet(context: context, isScrollControlled: true, shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+        builder: (context) => EditTaskBottomSheet(taskData: taskData, onTaskUpdated: (){
+          if(widget.onTaskUpdated != null )
+            {
+              widget.onTaskUpdated!();
+            }
+        }));
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }
