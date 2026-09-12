@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager_app/core/widgets/app_bottom_nav_bar.dart';
-import 'package:task_manager_app/core/widgets/app_text.dart';
 import 'package:task_manager_app/core/widgets/profile_menu_helper.dart';
 import 'package:task_manager_app/features/auth/screen/login_screen.dart';
+import 'package:task_manager_app/features/create_task/add_new_task_bottom_sheet.dart';
 import 'package:task_manager_app/features/dashboard/widgets/error_empty_state.dart';
 import 'package:task_manager_app/features/dashboard/widgets/profile_header.dart';
 import 'package:task_manager_app/core/widgets/screen_background.dart';
 import 'package:task_manager_app/features/dashboard/widgets/skeleton_loader_card.dart';
 import 'package:task_manager_app/features/auth/controllers/auth_controller.dart';
+import 'package:task_manager_app/features/task_dashboard/screens/task_list_screen.dart';
+import 'package:task_manager_app/features/task_details/task_details_screen.dart';
 import '../widgets/dashboard_status_grid.dart';
 import '../widgets/recent_task_list_section.dart';
 import '../controllers/task_controller.dart';
@@ -81,12 +83,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
               icon: Icons.assignment_outlined,
               activeIcon: Icons.assignment,
               label: 'Tasks',
-              onTap: () {}),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const TaskListScreen() ));
+              }),
           BottomNavItem(
               icon: Icons.add,
               label: 'Add',
               isSpecialButton: true,
-              onTap: () {}),
+              onTap: () {
+                showModalBottomSheet(context: context, isScrollControlled: true,builder: (context) =>  AddNewTaskBottomSheet(
+                 onTaskAdded: (){
+                   _getDashboardData();
+                 },
+                ));
+              }),
           BottomNavItem(
               icon: Icons.person_outline,
               activeIcon: Icons.person,
@@ -117,7 +127,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
         children: [
           DashboardStatusGrid(getCount: _getCount),
           const SizedBox(height: 24),
-          RecentTaskListSection(taskList: _recentTaskList),
+          RecentTaskListSection(taskList: _recentTaskList, onTaskTap: (taskData){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> TaskDetailsScreen(
+              taskData: taskData,
+              onTaskUpdated: (){_getDashboardData();},
+            )));
+          }),
         ],
       ),
     );

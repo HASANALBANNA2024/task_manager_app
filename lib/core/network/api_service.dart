@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+import '../../features/auth/controllers/auth_controller.dart';
+
 
 class ApiResponse {
   final bool isSuccess;
@@ -8,37 +10,36 @@ class ApiResponse {
   final dynamic responseData;
   final String errorMessage;
 
-
-  ApiResponse ({
+  ApiResponse({
     required this.isSuccess,
     required this.statusCode,
     this.responseData,
     this.errorMessage = '',
-});
-
+  });
 }
 
-
 class ApiService {
-  /// common headers
-  static Map<String, String> _headers(String? token) => {
-    'Content-Type': 'application/json',
-    'Accept':'application/json',
-    if(token != null && token.isNotEmpty) 'token' : token,
-  };
-
+  /// Common Headers: টোকেন না দিলে অটোমেটিক AuthController থেকে নেবে
+  static Map<String, String> _headers(String? token) {
+    final String userToken = token ?? AuthController.userToken ?? '';
+    return {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      if (userToken.isNotEmpty) 'token': userToken,
+    };
+  }
 
   /// Get Request
   static Future<ApiResponse> getRequest(String url, {String? token}) async {
     try {
-      log("Get: $url");
-      final response = await http.get(Uri.parse(url), headers:  _headers(token));
+      log("GET: $url");
+      final response = await http.get(Uri.parse(url), headers: _headers(token));
       return _handleResponse(response);
-    } catch (e){
-      log("Get error: $e");
+    } catch (e) {
+      log("GET Error: $e");
       return ApiResponse(
-          isSuccess: false,
-          statusCode: -1,
+        isSuccess: false,
+        statusCode: -1,
         errorMessage: e.toString(),
       );
     }
@@ -69,7 +70,6 @@ class ApiService {
     }
   }
 
-
   /// Common Response Handler
   static ApiResponse _handleResponse(http.Response response) {
     log("Status Code: ${response.statusCode}");
@@ -78,7 +78,6 @@ class ApiService {
     try {
       final decodedData = jsonDecode(response.body);
 
-      // Status Code 200 থেকে 299 এর মধ্যে হলে Success ধরা হবে
       if (response.statusCode >= 200 && response.statusCode < 300) {
         return ApiResponse(
           isSuccess: true,
@@ -86,8 +85,18 @@ class ApiService {
           responseData: decodedData,
         );
       } else {
-        // সার্ভার থেকে আসা আসল এরর মেসেজটি বের করা
-        String message = decodedData['data'] ?? decodedData['message'] ?? 'Something went wrong';
+        // নিরাপদভাবে এরর মেসেজ হ্যান্ডলিং (ক্র্যাশ প্রতিরোধে)
+        String message = 'Something went wrong';
+        if (decodedData is Map) {
+          if (decodedData['data'] is String) {
+            message = decodedData['data'];
+          } else if (decodedData['message'] is String) {
+            message = decodedData['message'];
+          } else if (decodedData['status'] != null) {
+            message = decodedData['status'].toString();
+          }
+        }
+
         return ApiResponse(
           isSuccess: false,
           statusCode: response.statusCode,
@@ -103,12 +112,4 @@ class ApiService {
       );
     }
   }
-
-
-
 }
-
-
-
-
-

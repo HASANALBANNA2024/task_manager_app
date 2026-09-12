@@ -134,4 +134,35 @@ class AppTheme {
       ),
     );
   }
+
+
+  /// status list style
+  static final List<Map<String, dynamic>> statusList = [
+    {
+      'name': 'New',
+      'value': 'New',
+      'color': amber,
+      'bg': amberTint,
+    },
+    {
+      'name': 'Progress',
+      'value': 'Progress',
+      'color': teal,
+      'bg': tealTint,
+    },
+    {
+      'name': 'Completed',
+      'value': 'Completed',
+      'color': moss,
+      'bg': mossTint,
+    },
+    {
+      'name': 'Canceled',
+      'value': 'Canceled',
+      'color': slate,
+      'bg': slateTint,
+    },
+  ];
+
+
 }
