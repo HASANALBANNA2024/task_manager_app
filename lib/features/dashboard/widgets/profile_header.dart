@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/core/constants/app_helper.dart';
 
 class ProfileHeader extends StatelessWidget {
   final String title;
@@ -16,18 +17,16 @@ class ProfileHeader extends StatelessWidget {
     this.onProfileTap,
   });
 
-
-  String _getInitials(String? name) {
-    if (name == null || name.trim().isEmpty) return "U";
-    List<String> nameParts = name.trim().split(" ");
-    if (nameParts.length > 1 && nameParts[1].isNotEmpty) {
-      return "${nameParts[0][0]}${nameParts[1][0]}".toUpperCase();
-    }
-    return nameParts[0][0].toUpperCase();
-  }
-
   @override
   Widget build(BuildContext context) {
+
+    final nameParts = (userName ?? '').trim().split(' ');
+    final firstName = nameParts.isNotEmpty ? nameParts[0] : '';
+    final lastName = nameParts.length > 1 ? nameParts[1] : '';
+
+
+    final String displayInitials = UserInitials.getInitials(firstName, lastName);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +47,6 @@ class ProfileHeader extends StatelessWidget {
               userName ?? "Loading...",
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-
             if (taskCountText != null) ...[
               const SizedBox(height: 6),
               Container(
@@ -78,7 +76,7 @@ class ProfileHeader extends StatelessWidget {
             ),
             alignment: Alignment.center,
             child: Text(
-              userInitials ?? _getInitials(userName),
+              displayInitials,
               style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1E3A2B)),
             ),
           ),

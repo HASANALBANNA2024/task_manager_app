@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:task_manager_app/core/constants/app_urls.dart';
 import 'package:task_manager_app/core/network/api_service.dart';
@@ -168,7 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     text: "Log in",
                     fontSize: 12.5,
                     fontWeight: FontWeight.w800,
-                    color: AppTheme.moss ?? const Color(0xFF2D5A42),
+                    color: AppTheme.moss,
                     onTap: () {
                       Navigator.pop(context);
                     },

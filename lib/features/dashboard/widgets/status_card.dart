@@ -36,7 +36,7 @@ class StatusCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.5),
+                color: Colors.white.withValues(alpha:0.5),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, size: 16, color: iconColor),

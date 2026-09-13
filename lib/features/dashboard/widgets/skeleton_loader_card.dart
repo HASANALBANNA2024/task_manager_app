@@ -55,7 +55,7 @@ class SkeletonLoaderCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFEAEFEA).withOpacity(0.7),
+        color: const Color(0xFFEAEFEA).withValues(alpha:0.7),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(

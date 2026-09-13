@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:task_manager_app/features/dashboard/widgets/task_item_card.dart';
 
 import '../../../core/widgets/app_text.dart';
-import '../../../core/widgets/app_text_button.dart';
-
 class RecentTaskListSection extends StatelessWidget {
   final List<dynamic> taskList;
   final Function(Map<String, dynamic>)? onTaskTap;
@@ -18,11 +16,10 @@ class RecentTaskListSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const AppText("Recent tasks", fontSize: 16, fontWeight: FontWeight.w700),
-            AppTextButton(text: "See all", onTap: () {}),
+            AppText("Recent tasks", fontSize: 16, fontWeight: FontWeight.w700),
           ],
         ),
         const SizedBox(height: 10),

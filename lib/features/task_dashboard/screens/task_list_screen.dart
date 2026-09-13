@@ -9,7 +9,6 @@ import '../../dashboard/widgets/task_item_card.dart';
 import '../widgets/task_empty_state_widget.dart';
 import '../widgets/task_filter_chips.dart';
 
-
 class TaskListScreen extends StatefulWidget {
   const TaskListScreen({super.key});
 
@@ -25,7 +24,8 @@ class _TaskListScreenState extends State<TaskListScreen> {
     'New': 0,
     'Progress': 0,
     'Completed': 0,
-    'Cancelled': 0
+    'Cancelled': 0,
+    'Canceled': 0,
   };
 
   @override
@@ -39,115 +39,119 @@ class _TaskListScreenState extends State<TaskListScreen> {
     return ScreenBackground(
         isGradient: false,
         backgroundColor: AppTheme.paper,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 16,
-            ),
-            const Row(
-             children: [
-               SizedBox(width: 10,),
-               AppText(
-                 "My Task",
-                 fontSize: 22,
-                 color: AppTheme.ink,
-                 fontWeight: FontWeight.w800,
-               ),
-             ],
-            ),
-            const SizedBox(
-              height: 14,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.0),
-              child: Divider(
-                height: 1,
-                thickness: 1,
-                color: Color(0xFFE2E8F0),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 16,
               ),
-            ),
-            TaskFilterChips(
-                selectedFilter: _selectedFilter,
-                statusCounts: _statusCounts,
-                onFilterSelected: (value) {
-                  if (_selectedFilter != value) {
-                    setState(() {
-                      _selectedFilter = value;
-                      _isLoading = true;
-                    });
-                    _fetchTasksByStatus(value).then((_) {
-                      if (mounted) setState(() => _isLoading = false);
-                    });
-                  }
-                }),
-            const SizedBox(
-              height: 6,
-            ),
+              const Row(
+                children: [
+                  SizedBox(
+                    width: 10,
+                  ),
+                  AppText(
+                    "My Task",
+                    fontSize: 22,
+                    color: AppTheme.ink,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 14,
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 12.0),
+                child: Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: Color(0xFFE2E8F0),
+                ),
+              ),
+              TaskFilterChips(
+                  selectedFilter: _selectedFilter,
+                  statusCounts: _statusCounts,
+                  onFilterSelected: (value) {
+                    if (_selectedFilter != value) {
+                      setState(() {
+                        _selectedFilter = value;
+                        _isLoading = true;
+                      });
+                      _fetchTasksByStatus(value).then((_) {
+                        if (mounted) setState(() => _isLoading = false);
+                      });
+                    }
+                  }),
+              const SizedBox(
+                height: 6,
+              ),
 
-            /// Task List Area
-            Expanded(
-                child: _isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(
+              /// Task List Area
+              Expanded(
+                  child: _isLoading
+                      ? const Center(
+                      child: CircularProgressIndicator(
                         color: AppTheme.moss,
                       ))
-                    : _taskList.isEmpty
-                        ? TaskEmptyStateWidget(filterName: _selectedFilter)
-                        : RefreshIndicator(
-                            color: AppTheme.moss,
-                            onRefresh: _loadInitialData,
-                            child: ListView.builder(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              itemCount: _taskList.length,
-                              itemBuilder: (context, index) {
-                                final task = _taskList[index];
-                                final String taskId =
-                                    task['_id'] ?? task['_id'] ?? '';
-                                final String title = task['title'] ?? '';
-                                final String status = task['status'] ?? 'New';
+                      : _taskList.isEmpty
+                      ? TaskEmptyStateWidget(filterName: _selectedFilter)
+                      : RefreshIndicator(
+                    color: AppTheme.moss,
+                    onRefresh: _loadInitialData,
+                    child: ListView.builder(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: _taskList.length,
+                      itemBuilder: (context, index) {
+                        final task = _taskList[index];
+                        final String taskId =
+                            task['_id'] ?? task['_id'] ?? '';
+                        final String title = task['title'] ?? '';
+                        final String status = task['status'] ?? 'New';
 
-                                return Dismissible(
-                                  key: Key(taskId),
-                                  direction: DismissDirection.endToStart,
-                                  background: Container(
-                                    margin: const EdgeInsets.only(bottom: 10),
-                                    alignment: Alignment.centerRight,
-                                    padding: const EdgeInsets.only(right: 20),
-                                    decoration: BoxDecoration(
-                                      color: AppTheme.brick,
-                                      borderRadius: BorderRadius.circular(14),
-                                    ),
-                                  ),
-                                  child: TaskItemCard(
-                                    title: title,
-                                    description: task!['description'],
-                                    date: task['createdDate'] ?? '',
-                                    status: status,
-                                    statusColor: _getStatusColor(status),
-                                    onTap: () async {
-                                      await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  TaskDetailsScreen(
-                                                    taskData: task,
-                                                    onTaskUpdated: () {
-                                                      _loadInitialData();
-                                                    },
-                                                  )));
-                                      _loadInitialData();
-                                    },
-                                  ),
-                                );
-                              },
+                        return Dismissible(
+                          key: Key(taskId),
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.only(right: 20),
+                            decoration: BoxDecoration(
+                              color: AppTheme.brick,
+                              borderRadius: BorderRadius.circular(14),
                             ),
-                          )),
-          ],
+                          ),
+                          child: TaskItemCard(
+                            title: title,
+                            description: task['description'] ?? '',
+                            date: task['createdDate'] ?? '',
+                            status: status,
+                            statusColor: _getStatusColor(status),
+                            onTap: () async {
+                              await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          TaskDetailsScreen(
+                                            taskData: task,
+                                            onTaskUpdated: () {
+                                              _loadInitialData();
+                                            },
+                                          )));
+                              _loadInitialData();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  )),
+            ],
+          ),
         ));
   }
-
   Future<void> _loadInitialData() async {
     setState(() => _isLoading = true);
     await Future.wait([
@@ -156,12 +160,14 @@ class _TaskListScreenState extends State<TaskListScreen> {
     ]);
     if (mounted) setState(() => _isLoading = false);
   }
-
   Future<void> _fetchTasksByStatus(String status) async {
+    String targetStatus = status;
+    if (status == "Cancelled") {
+      targetStatus = "Canceled";
+    }
     final response = await ApiService.getRequest(
-      AppUrls.listTaskByStatus(status),
+      AppUrls.listTaskByStatus(targetStatus),
     );
-
     if (mounted) {
       if (response.isSuccess) {
         setState(() {
@@ -176,16 +182,15 @@ class _TaskListScreenState extends State<TaskListScreen> {
       }
     }
   }
-
   Future<void> _fetchStatusCount() async {
     final response = await ApiService.getRequest(AppUrls.taskStatusCount);
-
     if (mounted && response.isSuccess) {
       Map<String, int> temp = {
         'New': 0,
         'Progress': 0,
         'Completed': 0,
         'Cancelled': 0,
+        'Canceled': 0,
       };
 
       final List dataList = response.responseData?['data'] ?? [];
@@ -195,6 +200,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
           temp[statusKey] = item['sum'] ?? 0;
         }
       }
+      temp['Cancelled'] = (temp['Cancelled'] ?? 0) + (temp['Canceled'] ?? 0);
 
       setState(() => _statusCounts = temp);
     }
@@ -209,6 +215,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
       case 'In Progress':
         return theme.colorScheme.primary;
       case 'Cancelled':
+      case 'Canceled':
         return theme.colorScheme.outline;
       case 'Completed':
         return theme.colorScheme.secondary;
@@ -216,7 +223,6 @@ class _TaskListScreenState extends State<TaskListScreen> {
         return theme.colorScheme.tertiary;
     }
   }
-
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),

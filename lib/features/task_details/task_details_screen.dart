@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:task_manager_app/core/widgets/app_icon.dart';
 import 'package:task_manager_app/core/widgets/app_icon_button.dart';
 import 'package:task_manager_app/core/widgets/app_text.dart';
-import 'package:task_manager_app/core/widgets/app_text_button.dart';
 import 'package:task_manager_app/core/widgets/screen_background.dart';
 import 'package:task_manager_app/features/task_details/components/edit_task_bottom_sheet.dart';
 
@@ -78,7 +77,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AppTheme.amber.withOpacity(0.3),
+                      color: AppTheme.amber.withValues(alpha:0.3),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: AppText(_selectedStatus == 'Progress'? 'In Progress': _selectedStatus,

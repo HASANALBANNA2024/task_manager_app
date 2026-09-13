@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/features/auth/screen/login_screen.dart';
 import '../../../app/theme/app_theme.dart';
 import '../../../core/widgets/app_text.dart';
 import '../../features/auth/controllers/auth_controller.dart';
@@ -33,11 +34,7 @@ void showLogoutConfirmationDialog(BuildContext context) {
             Navigator.pop(context);
             await AuthController.logout();
             if (context.mounted) {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/login',
-                    (route) => false,
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginScreen()));
             }
           },
           child: const AppText(

@@ -3,7 +3,6 @@ import 'package:task_manager_app/core/constants/app_urls.dart';
 import 'package:task_manager_app/core/network/api_service.dart';
 import 'package:task_manager_app/core/widgets/app_button.dart';
 import 'package:task_manager_app/core/widgets/app_text.dart';
-import 'package:task_manager_app/features/task_dashboard/screens/task_list_screen.dart';
 
 import '../../../app/theme/app_theme.dart';
 import '../../../core/widgets/app_text_field.dart';
@@ -154,37 +153,50 @@ class _EditTaskBottomSheetState extends State<EditTaskBottomSheet>{
   Future<void> _onTapTaskUpdate() async {
     final title = _titleController.text.trim();
     final description = _descriptionController.text.trim();
-    final taskId = widget.taskData['_id'] ?? widget.taskData['id']?? '';
+    final taskId = widget.taskData['_id'] ?? widget.taskData['id'] ?? '';
 
-    if(title.isEmpty || description.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: AppText("Please fill in all required fields")));
+    if (title.isEmpty || description.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill in all required fields")),
+      );
       return;
     }
+
     setState(() => _inProgress = true);
+
     final ApiResponse response = await ApiService.getRequest(
       AppUrls.updateTaskStatus(taskId, _selectedStatus),
     );
+
     setState(() => _inProgress = false);
+
+    if (!mounted) return;
+
     if (response.isSuccess) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: AppText("Task Updated Successfully!")),
-        );
-        widget.onTaskUpdated.call();
-        Navigator.pop(context);
-      }
+    /// local memory update
+      widget.taskData['title'] = title;
+      widget.taskData['description'] = description;
+      widget.taskData['status'] = _selectedStatus;
+
+      /// bottom sheet close
+      Navigator.pop(context);
+
+      /// parent reload
+      widget.onTaskUpdated.call();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Task Updated Successfully!")),
+      );
     } else {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: AppText(
-              response.errorMessage.isNotEmpty
-                  ? response.errorMessage
-                  : "Task update failed!",
-            ),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            response.errorMessage.isNotEmpty
+                ? response.errorMessage
+                : "Task update failed! Please try again.",
           ),
-        );
-      }
+        ),
+      );
     }
   }
 }

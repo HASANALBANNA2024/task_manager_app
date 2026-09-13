@@ -136,7 +136,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
                         text: "Resend",
                         fontSize: 12.5,
                         fontWeight: FontWeight.w800,
-                        color: AppTheme.moss ?? const Color(0xFF2D5A42),
+                        color: AppTheme.moss,
                         onTap: _onTapResendCode)
               ],
             ),
@@ -191,7 +191,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
     }
   }
 
-  // Resend method
+  /// Resend method
   Future<void> _onTapResendCode() async {
     if (widget.email == null || widget.email!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -203,7 +203,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
     });
     bool isSuccess = await AuthController.verifyEmail(widget.email!);
     setState(() {
-      isSuccess = false;
+      _isResending = false;
     });
     if (!mounted) return;
 
@@ -213,7 +213,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
       }
       _focusNodes[0].requestFocus();
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: AppText("OTP sent again! Check your email")));
+          const SnackBar(content: AppText("A new OTP code has been sent again! Check your email")));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -226,7 +226,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
     }
   }
 
-  // Single OTP Box Widget
+  /// Single OTP Box Widget
   Widget _buildOtpBox(int index) {
     return SizedBox(
       height: 52,
@@ -246,7 +246,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
         decoration: InputDecoration(
           counterText: "",
           fillColor: _controllers[index].text.isNotEmpty
-              ? (AppTheme.mossTint ?? const Color(0xFFEAF2EB))
+              ? (AppTheme.mossTint)
               : Colors.transparent,
           filled: true,
           contentPadding: EdgeInsets.zero,
@@ -254,7 +254,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(
               color: _controllers[index].text.isNotEmpty
-                  ? (AppTheme.moss ?? const Color(0xFF2D5A42))
+                  ? (AppTheme.moss)
                   : Colors.grey.shade300,
               width: 1.2,
             ),
@@ -262,7 +262,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(
-              color: AppTheme.moss ?? Color(0xFF2D5A42),
+              color: AppTheme.moss,
               width: 1.5,
             ),
           ),

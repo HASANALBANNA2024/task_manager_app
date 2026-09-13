@@ -25,14 +25,14 @@ class AppIcon extends StatelessWidget {
       height: size,
       width: size,
       decoration: BoxDecoration(
-        color: backgroundColor ?? AppTheme.mossTint ?? const Color(0xFFEAF2EB),
+        color: backgroundColor ?? AppTheme.mossTint,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: Center(
         child: Icon(
           icon,
           size: iconSize,
-          color: iconColor ?? AppTheme.moss ?? const Color(0xFF2D5A42),
+          color: iconColor ?? AppTheme.moss,
         ),
       ),
     );

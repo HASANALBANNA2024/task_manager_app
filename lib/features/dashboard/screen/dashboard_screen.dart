@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager_app/core/widgets/app_bottom_nav_bar.dart';
 import 'package:task_manager_app/core/widgets/profile_menu_helper.dart';
-import 'package:task_manager_app/features/auth/screen/login_screen.dart';
 import 'package:task_manager_app/features/create_task/add_new_task_bottom_sheet.dart';
 import 'package:task_manager_app/features/dashboard/widgets/error_empty_state.dart';
 import 'package:task_manager_app/features/dashboard/widgets/profile_header.dart';
@@ -11,6 +10,7 @@ import 'package:task_manager_app/features/auth/controllers/auth_controller.dart'
 import 'package:task_manager_app/features/profile/screens/profile_screen.dart';
 import 'package:task_manager_app/features/task_dashboard/screens/task_list_screen.dart';
 import 'package:task_manager_app/features/task_details/task_details_screen.dart';
+import '../../../core/widgets/log_out_pop_up.dart';
 import '../widgets/dashboard_status_grid.dart';
 import '../widgets/recent_task_list_section.dart';
 import '../controllers/task_controller.dart';
@@ -54,14 +54,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 onProfileTap: () {
                   ProfileMenuHelper.showMenu(context, items: [
                     ///profile menu
-                    ProfileMenuItem(title: "Profile", icon: Icons.person_off_rounded, onTap: (){}),
-                    ///settings
-                    ProfileMenuItem(title: "Settings", icon: Icons.settings_rounded, onTap: (){}),
+                    ProfileMenuItem(title: "Profile", icon: Icons.person_off_rounded, onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> const ProfileScreen()));
+                    }),
                     ///logout
                     ProfileMenuItem(title: "Logout", icon: Icons.logo_dev_rounded, onTap: () async {
-                     await AuthController.logout();
-                     if(!context.mounted) return;
-                     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> const LoginScreen() ), (route)=> false);
+                      showLogoutConfirmationDialog(context);
                     }),
                   ]);
                 },

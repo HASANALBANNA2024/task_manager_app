@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager_app/app/theme/app_theme.dart';
+import 'package:task_manager_app/core/constants/app_helper.dart';
 import 'package:task_manager_app/core/constants/app_urls.dart';
 import 'package:task_manager_app/core/network/api_service.dart';
 import 'package:task_manager_app/core/widgets/app_icon_button.dart';
@@ -7,6 +8,8 @@ import 'package:task_manager_app/core/widgets/app_text.dart';
 import 'package:task_manager_app/core/widgets/log_out_pop_up.dart';
 import 'package:task_manager_app/core/widgets/screen_background.dart';
 import 'package:task_manager_app/features/auth/controllers/auth_controller.dart';
+import 'package:task_manager_app/features/profile/screens/change_password_bottom_sheet.dart';
+import 'package:task_manager_app/features/profile/screens/edit_profile_screen.dart';
 import 'package:task_manager_app/features/profile/widgets/profile_tile_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -33,13 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
     final String mobileNumber = _userData?['mobile'] ?? AuthController.userData?['mobile']?? '';
     final String email = _userData?['email'] ?? AuthController.userData?['email'];
     /// name Initial
-    // Initials calculation (e.g., HR)
-    String initials = "U";
-    if (firstName.isNotEmpty && lastName.isNotEmpty) {
-      initials = "${firstName[0]}${lastName[0]}".toUpperCase();
-    } else if (firstName.isNotEmpty) {
-      initials = firstName.substring(0, firstName.length >= 2 ? 2 : 1).toUpperCase();
-    }
+    final String displayInitials = UserInitials.getInitials(firstName, lastName);
     return ScreenBackground(
         isGradient: false,
         backgroundColor: AppTheme.paper,
@@ -52,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                   child: Column(
                     children: [
                       AppBar(
-                        leading: AppIconButton(icon: Icons.arrow_forward_ios, onTap: (){
+                        leading: AppIconButton(icon: Icons.arrow_back_ios, onTap: (){
                           Navigator.pop(context);
                         }),
                         title: const AppText("Profile Details", fontSize: 16, fontWeight: FontWeight.w800),
@@ -78,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                                   ),
                                   alignment:  Alignment.center,
                                   child: AppText(
-                                    initials,
+                                    displayInitials,
                                     fontSize: 22,
                                     fontWeight: FontWeight.w800,
                                     color: AppTheme.moss,
@@ -96,11 +93,21 @@ class _ProfileScreenState extends State<ProfileScreen>{
                                     padding: const EdgeInsets.symmetric(horizontal: 20),
                                   child: Column(
                                     children: [
-                                      ProfileTileWidget(icon: Icons.edit_note_rounded, title: "Edit Profile", onTap: (){
+                                      ProfileTileWidget(icon: Icons.edit_note_rounded, title: "Edit Profile", onTap: ()async{
                                         /// profile edit screen call
+                                      final bool? isUpdated = await Navigator.push(context, MaterialPageRoute(builder: (context)=> const EditProfileScreen()));
+                                      if(isUpdated == true)
+                                        {
+                                          setState(() {
+
+                                          });
+                                        }
                                       }),
                                       const SizedBox(height: 12,),
-                                      ProfileTileWidget(icon: Icons.lock_outline_rounded, title: "Change password", onTap: (){}),
+                                      ProfileTileWidget(icon: Icons.lock_outline_rounded, title: "Change password", onTap: (){
+                                        showModalBottomSheet(context: context,isScrollControlled: true, builder: (context)=>  const ChangePasswordBottomSheet(
+                                        ));
+                                      }),
                                       const SizedBox(height:12,),
                                       ProfileTileWidget(icon: Icons.logo_dev_rounded, title: "Logout", onTap: (){
                                         showLogoutConfirmationDialog(context);

@@ -19,8 +19,8 @@ class ProfileTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color iconBg = isLogout
-        ? AppTheme.brick.withOpacity(0.12)
-        : AppTheme.moss.withOpacity(0.08);
+        ? AppTheme.brick.withValues(alpha:0.12)
+        : AppTheme.moss.withValues(alpha:0.08);
 
     final Color iconColor = isLogout ? AppTheme.brick : AppTheme.ink;
     final Color textColor = isLogout ? AppTheme.brick : AppTheme.ink;

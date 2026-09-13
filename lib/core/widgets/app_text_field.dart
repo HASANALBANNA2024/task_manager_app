@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-/// input field design to same for use custom widget
 class AppTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final String labelText;
   final bool obscureText;
+  final bool readOnly;
   final TextInputType keyboardType;
+  final String? Function(String?)? validator;
 
   const AppTextField({
     super.key,
@@ -14,7 +15,9 @@ class AppTextField extends StatelessWidget {
     required this.hintText,
     required this.labelText,
     this.obscureText = false,
+    this.readOnly = false,
     this.keyboardType = TextInputType.text,
+    this.validator,
   });
 
   @override
@@ -22,20 +25,25 @@ class AppTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(labelText, style: const TextStyle(
-          fontFamily: 'Manrope',
-          fontSize:  11.5,
-          fontWeight: FontWeight.w700
-        ),),
-        const SizedBox(height: 7,),
-        TextField(
+        Text(
+          labelText,
+          style: const TextStyle(
+            fontFamily: 'Manrope',
+            fontSize: 11.5,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 7),
+        TextFormField(
           controller: controller,
           obscureText: obscureText,
+          readOnly: readOnly,
           keyboardType: keyboardType,
+          validator: validator,
           decoration: InputDecoration(
-            hintText: hintText
+            hintText: hintText,
           ),
-        )
+        ),
       ],
     );
   }

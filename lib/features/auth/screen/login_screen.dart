@@ -6,7 +6,7 @@ import 'package:task_manager_app/core/widgets/app_text_button.dart';
 import 'package:task_manager_app/core/widgets/app_text_field.dart';
 import 'package:task_manager_app/core/widgets/screen_background.dart';
 import 'package:task_manager_app/features/auth/controllers/auth_controller.dart';
-import 'package:task_manager_app/features/auth/screen/Recover_verify_email_screen.dart';
+import 'package:task_manager_app/features/auth/screen/recover_verify_email_screen.dart';
 import 'package:task_manager_app/features/auth/screen/sign_up_screen.dart';
 import 'package:task_manager_app/features/dashboard/screen/dashboard_screen.dart';
 import '../../../app/theme/app_theme.dart';
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: "Forgot Password",
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
-                  color: AppTheme.moss ?? const Color(0xFF2D5A42),
+                  color: AppTheme.moss ,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: "Sign up",
                     fontSize: 12.5,
                     fontWeight: FontWeight.w800,
-                    color: AppTheme.moss ?? const Color(0xFF2D5A42),
+                    color: AppTheme.moss,
                     onTap: () {
                       Navigator.push(
                         context,
