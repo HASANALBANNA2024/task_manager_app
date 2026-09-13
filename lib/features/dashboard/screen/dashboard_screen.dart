@@ -8,6 +8,7 @@ import 'package:task_manager_app/features/dashboard/widgets/profile_header.dart'
 import 'package:task_manager_app/core/widgets/screen_background.dart';
 import 'package:task_manager_app/features/dashboard/widgets/skeleton_loader_card.dart';
 import 'package:task_manager_app/features/auth/controllers/auth_controller.dart';
+import 'package:task_manager_app/features/profile/screens/profile_screen.dart';
 import 'package:task_manager_app/features/task_dashboard/screens/task_list_screen.dart';
 import 'package:task_manager_app/features/task_details/task_details_screen.dart';
 import '../widgets/dashboard_status_grid.dart';
@@ -101,7 +102,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               icon: Icons.person_outline,
               activeIcon: Icons.person,
               label: 'Profile',
-              onTap: () {}),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> const ProfileScreen()));
+              }),
         ],
       ),
     );

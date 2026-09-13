@@ -12,6 +12,7 @@ class AuthController {
   static const String _firstNameKey = 'firstName';
   static const String _lastNameKey = 'lastName';
   static const String _emailKey = 'email';
+  static const String _mobileKey = 'mobile';
 
   /// login method
   static Future<bool> login({required String email, required String password}) async {
@@ -44,6 +45,7 @@ class AuthController {
           await sharedPreferences.setString(_firstNameKey, userData?['firstName'] ?? '');
           await sharedPreferences.setString(_lastNameKey, userData?['lastName'] ?? '');
           await sharedPreferences.setString(_emailKey, userData?['email'] ?? '');
+          await sharedPreferences.setString(_mobileKey, userData?['mobile']?? '');
         }
       }
       return true;
@@ -62,11 +64,13 @@ class AuthController {
       String firstName = sharedPreferences.getString(_firstNameKey) ?? '';
       String lastName = sharedPreferences.getString(_lastNameKey) ?? '';
       String email = sharedPreferences.getString(_emailKey) ?? '';
+      String mobile = sharedPreferences.getString(_mobileKey) ?? '';
 
       userData = {
         'firstName': firstName,
         'lastName': lastName,
         'email': email,
+        'mobile': mobile,
       };
       return true;
     }
@@ -124,5 +128,16 @@ class AuthController {
       return true;
     }
     return false;
+  }
+
+  /// profile update dynamic save method
+  static Future<void> saveUserData(Map<String, dynamic> data) async {
+    userData = data;
+
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString(_firstNameKey, data['firstName'] ?? '');
+    await sharedPreferences.setString(_lastNameKey, data['lastName'] ?? '');
+    await sharedPreferences.setString(_emailKey, data['email'] ?? '');
+    await sharedPreferences.setString(_mobileKey, data['mobile']?? '');
   }
 }
