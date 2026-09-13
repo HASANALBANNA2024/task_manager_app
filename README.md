@@ -1,16 +1,28 @@
 # 📝 Task Manager App
 
-A feature-rich, dynamic, and clean-architecture **Task Management Application** built with **Flutter** and powered by a **RESTful API**. This app allows users to create, categorize, track, update, and manage daily tasks efficiently with real-time status counts, secure JWT authentication, state persistence, and customized UI design.
+![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)
+![HTTP](https://img.shields.io/badge/HTTP-1.6.0-blue?style=for-the-badge&logo=dart)
+![Shared Preferences](https://img.shields.io/badge/Shared__Preferences-2.5.5-orange?style=for-the-badge&logo=android)
+![Google Fonts](https://img.shields.io/badge/Google__Fonts-8.2.1-yellow?style=for-the-badge&logo=google)
+![Cupertino Icons](https://img.shields.io/badge/Cupertino__Icons-1.0.8-lightgrey?style=for-the-badge&logo=apple)
+![Flutter Launcher Icons](https://img.shields.io/badge/Launcher__Icons-0.13.1-teal?style=for-the-badge)
+![Flutter Native Splash](https://img.shields.io/badge/Native__Splash-2.4.0-purple?style=for-the-badge)
+![Flutter Analyze](https://img.shields.io/badge/FLUTTER%20ANALYZE-0%20ISSUES-brightgreen?style=for-the-badge)
 
 ---
 
-## 🛠️ Tech Stack & Dependencies
+## 📌 Project Overview
 
-- **Framework & SDK:** Flutter (Dart SDK `>=3.0.0 <4.0.0`)
-- **Networking & API:** `http: ^1.6.0`
-- **Data Persistence:** `shared_preferences: ^2.5.5`
-- **UI & Typography:** `google_fonts: ^8.2.1`, `cupertino_icons: ^1.0.8`
-- **App Launcher & Splash:** `flutter_launcher_icons: ^0.13.1`, `flutter_native_splash: ^2.4.0`
+**Task Manager** is a modern, production-ready mobile application designed to simplify daily task tracking and personal workflow management. Built with **Flutter** and engineered using **Feature-First Architecture**, the app seamlessly integrates with a backend REST API to perform real-time data sync, state persistence, and dynamic UI updates.
+
+### 🌟 Key Architectural Highlights & Engineering Concepts
+- **Feature-First Folder Structure:** Modules are isolated by features (`auth`, `dashboard`, `profile`, `create_task`, `task_details`) to maintain scalability and high code maintainability.
+- **Secure JWT Authentication:** Implements token-based user authentication using `AuthController` and local persistence via `SharedPreferences`.
+- **Robust Network Layer:** Powered by a centralized `ApiService` for seamless HTTP requests (`GET`, `POST`), complete with authorization headers and automatic session handling.
+- **Dynamic Task Lifecycle (CRUD):** Complete task lifecycle management allowing users to create, filter (New, In Progress, Completed, Cancelled), update status via bottom sheets, and delete tasks.
+- **Account Recovery Flow:** A step-by-step OTP-based email verification and password reset mechanism.
+- **Sleek UI/UX Design:** Features custom loading skeletons, dynamic status counters, responsive custom text fields, and smooth modal bottom sheets built with `Google Fonts`.
 
 ---
 
@@ -26,60 +38,64 @@ A feature-rich, dynamic, and clean-architecture **Task Management Application** 
 
 ---
 
-## 📸 Application Screenshots & Key Widgets Breakdown
+## 📸 Screenshots Showcase
 
-> *Note: Make sure all screenshot assets are located inside the `screenshots/` directory at the root of your project repository.*
-
-### 1. Splash & Authentication Screens
-| Screenshot | Screen Reference | Key Widgets Used |
-|---|---|---|
-| `![Native Splash Screen](screenshots/native_splash_screen.png)` | `Native Splash` | System-native adaptive splash config |
-| `![Splash Screen](screenshots/splash_screen.png)` | `splash_screen.dart` | `ScreenBackground`, `CircularProgressIndicator` |
-| `![Login Screen](screenshots/login_screen.png)` | `login_screen.dart` | `Form`, `AppTextField`, `AppButton`, `AppTextButton` |
-| `![Sign Up Screen](screenshots/sign_up_screen.png)` | `sign_up_screen.dart` | `Form`, Custom Validators, `SingleChildScrollView` |
+### 1. Authentication & Onboarding
+<p align="center">
+  <img src="screenshots/splash_screen.png" width="220" alt="Splash Screen"/>
+  <img src="screenshots/login_screen.png" width="220" alt="Login Screen"/>
+  <img src="screenshots/sign_up_screen.png" width="220" alt="Sign Up Screen"/>
+</p>
 
 ---
 
 ### 2. Password Recovery Sequence
-| Screenshot | Screen Reference | Key Widgets Used |
-|---|---|---|
-| `![Forgot Password](screenshots/forgot_password.png)` | `recover_verify_email_screen.dart` | `AppTextField`, Validation Logic, `AppButton` |
-| `![OTP Verification Screen](screenshots/OTP_Screen.png)` | `pin_verification_screen.dart` | `PinCodeTextField`, Countdown Timer Widget |
-| `![Set New Password Screen](screenshots/set_new_screen.png)` | `reset_password_screen.dart` | `AppTextField` (obscured), `AppButton` |
+<p align="center">
+  <img src="screenshots/forgot_password.png" width="220" alt="Forgot Password"/>
+  <img src="screenshots/OTP_Screen.png" width="220" alt="OTP Screen"/>
+  <img src="screenshots/set_new_screen.png" width="220" alt="Reset Password"/>
+</p>
 
 ---
 
-### 3. Task Dashboard & Task Lists
-| Screenshot | Screen Reference | Key Widgets Used |
-|---|---|---|
-| `![Dashboard Screen](screenshots/dashboard_screen.png)` | `dashboard_screen.dart` | `DashboardStatusGrid`, `StatusCard`, `RecentTaskListSection` |
-| `![Task List Screen](screenshots/task_list_screen.png)` | `task_list_screen.dart` | `TaskFilterChips`, `TaskItemCard`, `SkeletonLoaderCard` |
-| `![Empty Task List](screenshots/empty_task_list.png)` | N/A | `TaskEmptyStateWidget`, `ErrorEmptyState` |
+### 3. Dashboard & Task Management
+<p align="center">
+  <img src="screenshots/dashboard_screen.png" width="220" alt="Dashboard"/>
+  <img src="screenshots/task_list_screen.png" width="220" alt="Task List"/>
+  <img src="screenshots/task_details_screen.png" width="220" alt="Task Details"/>
+</p>
 
 ---
 
-### 4. Task Actions & Modal Dialogs
-| Screenshot | Screen Reference | Key Widgets Used |
-|---|---|---|
-| `![Add Task Bottom Sheet](screenshots/add_task_bottom_sheet.png)` | `add_new_task_bottom_sheet.dart` | `showModalBottomSheet`, `AppTextField`, `AppButton` |
-| `![Task Details Screen](screenshots/task_details_screen.png)` | `task_details_screen.dart` | `AppText`, Status Indicator Badge, Dynamic Cards |
-| `![Edit Task Bottom Sheet](screenshots/edit_task_bottom_sheet.png)` | `edit_task_bottom_sheet.dart` | `DropdownButtonFormField`, `showModalBottomSheet` |
-| `![Delete Task Pop-up](screenshots/delete_task_popup.png)` | N/A | `AlertDialog`, Action Buttons (`AppButton`) |
+### 4. Dialogs & Action Sheets
+<p align="center">
+  <img src="screenshots/add_task_bottom_sheet.png" width="220" alt="Add Task"/>
+  <img src="screenshots/edit_task_bottom_sheet.png" width="220" alt="Edit Task"/>
+  <img src="screenshots/delete_task_popup.png" width="220" alt="Delete Popup"/>
+</p>
 
 ---
 
-### 5. Profile Management & Actions
-| Screenshot | Screen Reference | Key Widgets Used |
-|---|---|---|
-| `![Profile Screen](screenshots/profile_screen.png)` | `profile_screen.dart` | `ProfileHeader`, `ProfileTileWidget`, `AppIconButton` |
-| `![Edit Profile Screen](screenshots/edit_profile_screen.png)` | `edit_profile_screen.dart` | `CircleAvatar`, Image Picker/Input, `AppTextField` |
-| `![Change Password Bottom Sheet](screenshots/only_change_password_from_profile_screen.png)` | `change_password_bottom_sheet.dart` | `showModalBottomSheet`, Form Validation |
-| `![App Menu Bottom Sheet](screenshots/app_menu_bottom_sheet.png)` | N/A | Custom BottomSheet Menu |
-| `![Logout Confirmation Pop-up](screenshots/logout_pop_from_profile_screen.png)` | `log_out_pop_up.dart` | `AlertDialog`, `AuthController.logout()` |
+### 5. Profile & Settings
+<p align="center">
+  <img src="screenshots/profile_screen.png" width="220" alt="Profile Screen"/>
+  <img src="screenshots/edit_profile_screen.png" width="220" alt="Edit Profile"/>
+  <img src="screenshots/logout_pop_from_profile_screen.png" width="220" alt="Logout Dialog"/>
+</p>
 
 ---
 
-## 📁 Full Architecture & Directory Structure
+## 🛠️ Tech Stack & Dependencies
+
+- **Framework & SDK:** Flutter (Dart SDK `>=3.0.0 <4.0.0`)
+- **Networking & API:** `http: ^1.6.0`
+- **Data Persistence:** `shared_preferences: ^2.5.5`
+- **UI & Typography:** `google_fonts: ^8.2.1`, `cupertino_icons: ^1.0.8`
+- **App Launcher & Splash:** `flutter_launcher_icons: ^0.13.1`, `flutter_native_splash: ^2.4.0`
+
+---
+
+## 📁 Project Structure
 
 ```text
 task_manager_app/
@@ -148,5 +164,4 @@ task_manager_app/
 │   │       ├── components/
 │   │       │   └── edit_task_bottom_sheet.dart
 │   │       └── task_details_screen.dart
-├── └── main.dart
-
+│___└── main.dart
