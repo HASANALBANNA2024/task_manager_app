@@ -6,7 +6,6 @@ import 'package:task_manager_app/core/widgets/app_text_button.dart';
 import 'package:task_manager_app/core/widgets/screen_background.dart';
 import 'package:task_manager_app/features/auth/controllers/auth_controller.dart';
 import 'package:task_manager_app/features/auth/screen/reset_password_screen.dart';
-
 import '../../../app/theme/app_theme.dart';
 
 class PinVerificationScreen extends StatefulWidget {
@@ -22,7 +21,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
   bool _inProgress = false;
   bool _isResending = false;
 
-  // 6 Digit Controller & FocusNodes
+  /// 6 Digit Controller & FocusNodes
   final List<TextEditingController> _controllers =
       List.generate(6, (_) => TextEditingController());
   final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
@@ -49,7 +48,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
           children: [
             const SizedBox(height: 10),
 
-            // Back Button
+            /// Back Button
             GestureDetector(
               onTap: () => Navigator.pop(context),
               child: const AppIcon(
@@ -64,7 +63,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
 
             const SizedBox(height: 30),
 
-            // Header Icon & Title
+            /// Header Icon & Title
             Center(
               child: Column(
                 children: [
@@ -96,7 +95,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
 
             const SizedBox(height: 32),
 
-            // 6-Digit OTP Custom Input Fields
+            /// 6-Digit OTP Custom Input Fields
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(6, (index) => _buildOtpBox(index)),
@@ -104,7 +103,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
 
             const SizedBox(height: 28),
 
-            // Verify Button with Loading Indicator
+            /// Verify Button with Loading Indicator
             _inProgress
                 ? const Center(child: CircularProgressIndicator())
                 : AppButton(
@@ -115,7 +114,7 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> {
 
             const SizedBox(height: 24),
 
-            // Resend Option
+            /// Resend Option
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

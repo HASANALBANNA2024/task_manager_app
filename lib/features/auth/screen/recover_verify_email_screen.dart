@@ -37,7 +37,7 @@ class _RecoverVerifyEmailScreenState extends State<RecoverVerifyEmailScreen> {
           children: [
             const SizedBox(height: 10),
 
-            // Back Button Icon Box
+            /// Back Button Icon Box
             GestureDetector(
               onTap: () => Navigator.pop(context),
               child: const AppIcon(
@@ -52,7 +52,7 @@ class _RecoverVerifyEmailScreenState extends State<RecoverVerifyEmailScreen> {
 
             const SizedBox(height: 30),
 
-            // Center Top Mail Icon, Title & Subtitle
+            /// Center Top Mail Icon, Title & Subtitle
             const Center(
               child: Column(
                 children: [
@@ -84,7 +84,7 @@ class _RecoverVerifyEmailScreenState extends State<RecoverVerifyEmailScreen> {
 
             const SizedBox(height: 32),
 
-            // Email Field
+            /// Email Field
             AppTextField(
               controller: _emailController,
               labelText: "Email",

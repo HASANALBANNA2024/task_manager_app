@@ -38,7 +38,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           children: [
             const SizedBox(height: 10),
 
-            // Back Button
+            /// Back Button
             GestureDetector(
               onTap: () => Navigator.pop(context),
               child: const AppIcon(
@@ -53,7 +53,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
             const SizedBox(height: 30),
 
-            // Top Header Lock Icon, Title & Description
+            /// Top Header Lock Icon, Title & Description
             const Center(
               child: Column(
                 children: [
@@ -85,7 +85,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
             const SizedBox(height: 32),
 
-            // New Password Field
+            /// New Password Field
             AppTextField(
               controller: _newPasswordController,
               labelText: "New password",
@@ -95,7 +95,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
             const SizedBox(height: 16),
 
-            // Confirm Password Field
+            /// Confirm Password Field
             AppTextField(
               controller: _confirmPasswordController,
               labelText: "Confirm password",
@@ -105,7 +105,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
             const SizedBox(height: 28),
 
-            // Reset Password Action Button
+            /// Reset Password Action Button
            _inProgress ? const Center(child:  CircularProgressIndicator(),) :
                AppButton(text: "Reset password", onTap: _onTapResetPassword, width: double.infinity,)
           ],
@@ -118,7 +118,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final password = _newPasswordController.text.trim();
     final confirmPassword = _confirmPasswordController.text.trim();
 
-    // Validation
+    /// Validation
     if (password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter a new password')),
@@ -145,7 +145,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     setState(() => _inProgress = true);
 
-    // AuthController Call
+    /// AuthController Call
     bool isSuccess = await AuthController.resetPassword(email: widget.email, otp: widget.otpcode, newPassword: password);
     setState(() => _inProgress = false);
 
@@ -159,7 +159,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         ),
       );
 
-      // Login Screen-navigate
+      /// Login Screen-navigate
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const LoginScreen()),

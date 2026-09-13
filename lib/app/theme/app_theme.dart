@@ -27,7 +27,7 @@ class AppTheme {
   static const Color brick = Color(0xFFAE4630);
   static const Color brickTint = Color(0xFFF5DED6);
 
-  // ================= LIGHT THEME DATA =================
+  /// ================= LIGHT THEME DATA =================
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
@@ -43,7 +43,7 @@ class AppTheme {
         onSurface: ink,
       ),
 
-      // Text Theme with Google Fonts (Manrope)
+      /// Text Theme with Google Fonts (Manrope)
       textTheme: TextTheme(
         headlineLarge: GoogleFonts.manrope(
           fontSize: 38,
@@ -84,7 +84,7 @@ class AppTheme {
         ),
       ),
 
-      // Input Decoration (Text Fields)
+      /// Input Decoration (Text Fields)
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: surface,
@@ -116,7 +116,7 @@ class AppTheme {
         ),
       ),
 
-      // Elevated Button Theme
+      /// Elevated Button Theme
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: moss,

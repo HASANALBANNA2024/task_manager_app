@@ -8,7 +8,6 @@ import 'package:task_manager_app/core/widgets/app_text_button.dart';
 import 'package:task_manager_app/core/widgets/app_text_field.dart';
 import 'package:task_manager_app/core/widgets/screen_background.dart';
 import 'package:task_manager_app/features/auth/screen/login_screen.dart';
-
 import '../../../app/theme/app_theme.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -51,7 +50,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               const SizedBox(height: 10),
 
-              // Back Button Icon Box
+              /// Back Button Icon Box
               GestureDetector(
                 onTap: () => Navigator.pop(context),
                 child: const AppIcon(
@@ -66,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               const SizedBox(height: 24),
 
-              // Title Header
+              /// Title Header
               const AppText(
                 "Create your account",
                 fontSize: 22,
@@ -76,7 +75,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               const SizedBox(height: 6),
 
-              // Subtitle
+              /// Subtitle
               const AppText(
                 "A few details and you're set to go",
                 fontSize: 13,
@@ -86,7 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               const SizedBox(height: 28),
 
-              // First Name and Last Name Row
+              /// First Name and Last Name Row
               Row(
                 children: [
                   Expanded(
@@ -109,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               const SizedBox(height: 16),
 
-              // Email Field
+              /// Email Field
               AppTextField(
                 controller: _emailController,
                 labelText: "Email",
@@ -119,7 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               const SizedBox(height: 16),
 
-              // Mobile Number Field
+              /// Mobile Number Field
               AppTextField(
                 controller: _mobileController,
                 labelText: "Mobile number",
@@ -129,7 +128,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               const SizedBox(height: 16),
 
-              // Password Field
+              /// Password Field
               AppTextField(
                 controller: _passwordController,
                 labelText: "Password",
@@ -139,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               const SizedBox(height: 28),
 
-              // Primary Create Account Button with Loading State
+              /// Primary Create Account Button with Loading State
               Visibility(
                 visible: !_inProgress,
                 replacement: const Center(
@@ -154,7 +153,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               const SizedBox(height: 24),
 
-              // Bottom Already Have Account Option
+              /// Bottom Already Have Account Option
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

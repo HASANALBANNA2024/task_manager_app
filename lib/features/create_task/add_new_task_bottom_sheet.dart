@@ -3,7 +3,6 @@ import 'package:task_manager_app/core/constants/app_urls.dart';
 import 'package:task_manager_app/core/widgets/app_button.dart';
 import 'package:task_manager_app/core/widgets/app_text.dart';
 import 'package:task_manager_app/core/widgets/app_text_field.dart';
-
 import '../../app/theme/app_theme.dart';
 import '../../core/network/api_service.dart';
 
@@ -47,7 +46,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top Handle Indicator
+              /// Top Handle Indicator
               Center(
                 child: Container(
                   width: 48,
@@ -60,7 +59,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               ),
               const SizedBox(height: 20),
 
-              // Sheet Title
+              /// Sheet Title
               const AppText(
                 "Add New Task",
                 fontSize: 20,
@@ -69,7 +68,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               ),
               const SizedBox(height: 18),
 
-              // Title Input
+              /// Title Input
               AppTextField(
                 controller: _titleTEController,
                 labelText: "Title",
@@ -77,7 +76,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               ),
               const SizedBox(height: 16),
 
-              // Description Input
+              /// Description Input
               AppTextField(
                 controller: _descriptionTEController,
                 labelText: "Description",
@@ -85,7 +84,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               ),
               const SizedBox(height: 16),
 
-              // Status Label
+              /// Status Label
               const AppText(
                 "Status",
                 fontSize: 13,
@@ -94,7 +93,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               ),
               const SizedBox(height: 10),
 
-              // Status Chips
+              /// Status Chips
               Wrap(
                 spacing: 10,
                 runSpacing: 10,
@@ -143,7 +142,7 @@ class _AddNewTaskBottomSheetState extends State<AddNewTaskBottomSheet> {
               ),
               const SizedBox(height: 24),
 
-              // Save Action Button (AppButton isLoading )
+              /// Save Action Button (AppButton isLoading )
               AppButton(
                 text: "Save Task",
                 width: double.infinity,

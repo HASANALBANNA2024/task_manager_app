@@ -7,7 +7,7 @@ class AuthController {
   static String? userToken;
   static Map<String, dynamic>? userData;
 
-  // SharedPreferences Keys
+  /// SharedPreferences Keys
   static const String _tokenKey = 'token';
   static const String _firstNameKey = 'firstName';
   static const String _lastNameKey = 'lastName';
@@ -111,7 +111,7 @@ class AuthController {
   }) async {
     final Map<String, dynamic> requestBody = {
       "email": email.trim(),
-      "OTP": otp.trim(), // POSTMAN- "OTP"
+      "OTP": otp.trim(), /// POSTMAN- "OTP"
       "password": newPassword.trim(),
     };
 

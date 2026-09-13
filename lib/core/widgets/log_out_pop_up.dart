@@ -32,9 +32,15 @@ void showLogoutConfirmationDialog(BuildContext context) {
         TextButton(
           onPressed: () async {
             Navigator.pop(context);
+
             await AuthController.logout();
+
             if (context.mounted) {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginScreen()));
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    (route) => false,
+              );
             }
           },
           child: const AppText(

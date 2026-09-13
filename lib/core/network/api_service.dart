@@ -19,7 +19,7 @@ class ApiResponse {
 }
 
 class ApiService {
-  /// Common Headers: টোকেন না দিলে অটোমেটিক AuthController থেকে নেবে
+  /// Common Headers:  AuthController
   static Map<String, String> _headers(String? token) {
     final String userToken = token ?? AuthController.userToken ?? '';
     return {
@@ -85,7 +85,6 @@ class ApiService {
           responseData: decodedData,
         );
       } else {
-        // নিরাপদভাবে এরর মেসেজ হ্যান্ডলিং (ক্র্যাশ প্রতিরোধে)
         String message = 'Something went wrong';
         if (decodedData is Map) {
           if (decodedData['data'] is String) {

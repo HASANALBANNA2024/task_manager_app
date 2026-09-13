@@ -9,7 +9,7 @@ import '../../app/theme/app_theme.dart';
 import '../../core/constants/app_urls.dart';
 import '../../core/network/api_service.dart';
 import '../../core/widgets/app_button.dart';
-import '../../core/widgets/info_row_widget.dart';
+
 
 class TaskDetailsScreen extends StatefulWidget {
   final Map<String, dynamic>? taskData;
@@ -37,20 +37,12 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    final owner = widget.taskData?['email'] ??
-        widget.taskData?['owner'] ??
-        'hasan@gmail.com';
-    final createdDate = widget.taskData?['createdDate'] ??
-        widget.taskData?['createdAt'] ??
-        '27 Jan, 2024';
-    final taskId = widget.taskData?['_id'] ?? widget.taskData?['id'] ?? '';
-
     return ScreenBackground(
       isGradient: false,
       backgroundColor: AppTheme.paper,
       child: Column(
         children: [
-          // AppBar Section
+          /// AppBar Section
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
@@ -63,7 +55,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
               ],
             ),
           ),
-          // Content Area
+          /// Content Area
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -72,7 +64,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                 children: [
                   const SizedBox(height: 10),
 
-                  // Status Badge
+                  /// Status Badge
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
@@ -88,35 +80,15 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Task Title
+                  /// Task Title
                   AppText(_title,fontSize: 22,fontWeight: FontWeight.w800,color: AppTheme.ink,),
                   const SizedBox(height: 12),
-                  // Task Description
+                  /// Task Description
                   AppText(_description,fontSize: 13.5, fontWeight: FontWeight.w500,color: AppTheme.inkFaint,),
                   const SizedBox(height: 32),
-                  // Owner
-                  InfoRowWidget(label: "Owner",value: owner, ),
                   const Divider(color: AppTheme.line, height: 28, thickness: 1),
-
-
-                  InfoRowWidget(
-                    label: "Created",
-                    value: createdDate,
-                  ),
-                  const Divider(color: AppTheme.line, height: 28, thickness: 1),
-
-
-                  InfoRowWidget(
-                    label: "Task ID",
-                    value: taskId.length > 15
-                        ? "${taskId.substring(0, 8)}...${taskId.substring(taskId.length - 4)}"
-                        : taskId,
-                  ),
-                  const Divider(color: AppTheme.line, height: 28, thickness: 1),
-
-                  const SizedBox(height: 28),
-
-                  // Change Status Header
+                  const SizedBox(height: 42),
+                  /// Change Status Header
                   const AppText(
                     "Change status",
                     fontSize: 14,
@@ -125,7 +97,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                   ),
                   const SizedBox(height: 14),
 
-                  // Status Selection Grid
+                  /// Status Selection Grid
                   _isStatusUpdating
                       ? const Center(
                           child:
@@ -179,10 +151,10 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         ),
                   const SizedBox(height: 32),
 
-                  // Action Buttons (Edit & Delete)
+                  /// Action Buttons (Edit & Delete)
                   Row(
                     children: [
-                      // Edit Button (Outlined Style)
+                      /// Edit Button (Outlined Style)
                       Expanded(
                         child: AppButton(
                           text: "Edit",
@@ -200,7 +172,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                       ),
                       const SizedBox(width: 14),
 
-                      // Delete Button (Filled Style)
+                      /// Delete Button (Filled Style)
                       Expanded(
                         child: AppButton(
                           text: "Delete",
@@ -288,7 +260,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
           actions: [
             Row(
               children: [
-                // Cancel Button (Outlined)
+                /// Cancel Button (Outlined)
                 Expanded(
                   child: AppButton(
                     text: "Cancel",
